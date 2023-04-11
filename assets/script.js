@@ -1,54 +1,40 @@
 $(function () {
 
-// This function uses dayjs to display the current date and time on the page in real time
-  function refreshTime(){
-    setInterval(function (){
-       var currentTime = dayjs()
-       $('#currentDay').text(currentTime.format('dddd, MMMM D, YYYY h:mm A'));
-     }, 1000);
-   }
-
-// Calls the 'refreshTime' function up above
-   refreshTime();
-
-// This is a jquery event listener that listens for the press of a button anywhere on the page and then logs it in the console as 'button clicked' to prove that a button was clicked
-      $( 'button' ).on( 'click', function() {
+// This is an event listener that listens for the press of a button anywhere on the page and then logs it in the console as 'button clicked' to prove that a button was clicked
+      $('button').on('click', function() {
         console.log('button clicked');
 
-// The 'textInput' variable... and the 'currentHour' variable...
+// The 'textInput' variable is for any text inputs that are typed into any of the timeblocks and the 'currentHour' variable sees what hour it is
       var textInput = $(this).siblings('.description').val(); 
       var currentHour = $(this).parent().attr('id');
 
-// Saves the 2 above variables to local storage and then logs it to the console 
+// That info is then saved to localStorage and then its also loged in the console 
       localStorage.setItem(currentHour, textInput);
         console.log(localStorage);
     
-    });
+  });
 
-//  
-    $('#hour-9 .description').val(localStorage.getItem('hour9'));
-    $('#hour-10 .description').val(localStorage.getItem('hour10'));
-    $('#hour-11 .description').val(localStorage.getItem('hour11'));
-    $('#hour-12 .description').val(localStorage.getItem('hour12'));
-    $('#hour-13 .description').val(localStorage.getItem('hour13'));
-    $('#hour-14 .description').val(localStorage.getItem('hour14'));
-    $('#hour-15 .description').val(localStorage.getItem('hour15'));
-    $('#hour-16 .description').val(localStorage.getItem('hour16'));
-    $('#hour-17 .description').val(localStorage.getItem('hour17'));
-    $('#hour-18 .description').val(localStorage.getItem('hour18'));
+// What this does is each individual timeblock (1 for each hour) retrieves any previously inputed information from localStorage and loads it onto the page on refresh  
+    $('#hour-9 .description').val(localStorage.getItem('hour-9'));
+    $('#hour-10 .description').val(localStorage.getItem('hour-10'));
+    $('#hour-11 .description').val(localStorage.getItem('hour-11'));
+    $('#hour-12 .description').val(localStorage.getItem('hour-12'));
+    $('#hour-13 .description').val(localStorage.getItem('hour-13'));
+    $('#hour-14 .description').val(localStorage.getItem('hour-14'));
+    $('#hour-15 .description').val(localStorage.getItem('hour-15'));
+    $('#hour-16 .description').val(localStorage.getItem('hour-16'));
+    $('#hour-17 .description').val(localStorage.getItem('hour-17'));
+    $('#hour-18 .description').val(localStorage.getItem('hour-18')); 
 
-// This function takes the current hour and then compares it to the time on each timeblock to see whether that specific time is in the past, present, or future which then the timeblock background color is chnaged to either grey, red, or green to reflect that
-  function whatHourIsIt() {
-    
-// Used dayjs to fetch the current hour
+// Fetches the current hour using dayjs
     var hourNow = dayjs().hour();
 
-// 
+// This is a loop that loops over all of the timeblocks and then logs both the hour in the timeblock and the current hour to the console
     $('.time-block').each(function () {
         var hourTimeBlock = parseInt($(this).attr('id').split('hour')[1]);
-          console.log( hourTimeBlock, hourNow)
+          console.log( hourTimeBlock, hourNow);
 
-        
+// This takes the hours in each of the timeblocks and the current hour (present) and then depending on what hour it actually is changes the rest of the timeblocks (found in the html) to either past or future using if and else if statements which are then reflected on the page by a color either grey, red, or green (found in the css) 
         if (hourTimeBlock < hourNow) {
             $(this).addClass('past');
             $(this).removeClass('future');
@@ -64,9 +50,16 @@ $(function () {
             $(this).removeClass('past');
             $(this).addClass('future');
         }
-    })
-  }
-
-// Calls the 'whatHourIsIt' function up above
-  whatHourIsIt();
+    });
 }); 
+
+// This function uses dayjs to display the current date and time on the page in real time
+function refreshTime(){
+  setInterval(function (){
+     var currentTime = dayjs()
+     $('#currentDay').text(currentTime.format('dddd, MMMM D, YYYY h:mm A'));
+   }, 1000);
+ }
+
+// Calls the 'refreshTime' function above
+ refreshTime();
